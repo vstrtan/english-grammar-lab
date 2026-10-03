@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Grammar Lab · Present Perfect vs Past Simple</title>
+<style>
+  :root {
+    --teal: #2fbfb3; --teal-d: #0e8f82; --violet: #6e62dc; --purple: #5b4ed0;
+    --pink: #d84b86; --ink: #1c2430; --muted: #5c6672; --soft: #f4f6fa;
+    --line: #e6e9f0; --bad: #c43b5a; --good: #0e8f82;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); background: #e7f7f5; line-height: 1.5; }
+  .bg-blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .bg-blobs span { position: absolute; border-radius: 50%; opacity: 0.55; }
+  .bg-blobs .a { width: 220px; height: 220px; background: #f2c14e; top: -60px; left: -40px; }
+  .bg-blobs .b { width: 180px; height: 180px; background: #8e84f0; top: 40px; right: -50px; }
+  .bg-blobs .c { width: 140px; height: 140px; background: #f0a0c0; bottom: 80px; left: -30px; }
+  header { position: relative; z-index: 1; max-width: 1080px; margin: 28px auto 0; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .brand { font-size: 13px; letter-spacing: 0.16em; font-weight: 700; color: var(--teal-d); }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--ink); background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 14px rgba(28,36,48,0.06); }
+  main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 18px 20px 64px; }
+  .hero, .panel, .ref { background: #fff; border-radius: 28px; box-shadow: 0 16px 40px rgba(28,36,48,0.08); padding: 36px; }
+  .hero { margin-top: 18px; }
+  .kicker { font-size: 12px; letter-spacing: 0.16em; font-weight: 700; color: var(--teal-d); margin: 0 0 8px; }
+  h1 { font-size: 44px; line-height: 1.05; margin: 0 0 12px; letter-spacing: -0.03em; }
+  h1 span { color: var(--pink); }
+  .lede { font-size: 18px; color: var(--muted); max-width: 720px; margin: 0 0 18px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .choice { border-radius: 18px; padding: 18px; }
+  .choice.ps { background: #f6f4ff; }
+  .choice.pp { background: #fff4f8; }
+  .choice h3 { margin: 0 0 6px; }
+  .choice.ps h3 { color: var(--purple); }
+  .choice.pp h3 { color: var(--pink); }
+  .choice p { margin: 0; color: var(--muted); }
+  section { margin-top: 22px; }
+  h2 { font-size: 28px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+  .tabs, .lab-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tabs button, .lab-nav button, .opts button, .primary, .ghost { border: 0; border-radius: 999px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-size: 14px; }
+  .tabs button, .lab-nav button, .opts button { background: var(--soft); color: var(--ink); }
+  .tabs button.on, .lab-nav button.on { background: var(--purple); color: #fff; }
+  .rule { display: none; }
+  .rule.on { display: block; }
+  .rule li { margin: 10px 0; }
+  .ex { color: var(--purple); }
+  .item { border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .item p { margin: 0 0 10px; font-size: 17px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opts button { border-radius: 12px; }
+  .opts button.good { background: #e5f7f4; color: var(--good); }
+  .opts button.bad { background: #fdecef; color: var(--bad); }
+  .opts button:disabled { cursor: default; }
+  .why { margin-top: 10px; color: var(--muted); font-size: 14px; display: none; }
+  .why.show { display: block; }
+  .sort-board { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; gap: 12px; }
+  .bin { background: var(--soft); border-radius: 16px; min-height: 240px; padding: 12px; }
+  .bin h3 { margin: 0 0 8px; font-size: 15px; }
+  .chip { display: inline-block; margin: 4px; padding: 8px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); cursor: pointer; font-weight: 700; font-size: 14px; }
+  .chip.sel { outline: 2px solid var(--purple); }
+  .chip.ok { background: #e5f7f4; }
+  .chip.no { background: #fdecef; }
+  .scorebar { display: flex; justify-content: space-between; gap: 12px; background: var(--soft); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; }
+  .primary { background: var(--purple); color: #fff; border-radius: 12px; }
+  .ghost { background: #fff; color: var(--purple); border: 1px solid #ddd8f8; border-radius: 12px; }
+  .result { display: none; border-radius: 18px; padding: 18px; background: #f6f4ff; margin-top: 8px; }
+  .result.show { display: block; }
+  .result strong { font-size: 28px; color: var(--purple); }
+  footer.note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 22px; }
+  @media (max-width: 800px) {
+    h1 { font-size: 34px; }
+    .grid-2, .sort-board { grid-template-columns: 1fr; }
+    .hero, .panel, .ref { padding: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-blobs"><span class="a"></span><span class="b"></span><span class="c"></span></div>
+<header>
+  <div class="brand">GRAMMAR LAB</div>
+  <nav>
+    <a href="#reference">Reference</a>
+    <a href="#lab">Practice</a>
+    <a href="#quiz">Scored check</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <p class="kicker">INTERMEDIATE +</p>
+    <h1>Past Simple<br>and <span>Present Perfect</span></h1>
+    <p class="lede">The perfect reports a present situation. The simple locates a finished time. Practice uses adult contexts: bids, accounts, visits, news. The slides tell the story; this page is the work.</p>
+    <div class="grid-2">
+      <div class="choice pp"><h3>Present perfect</h3><p>Result now, just / already / yet, experience, an open week or month.</p></div>
+      <div class="choice ps"><h3>Past simple</h3><p>in March, at 5.30, ago, a When-question, a period the speaker has closed.</p></div>
+    </div>
+  </section>
+
+  <section class="ref" id="reference">
+    <p class="kicker">REFERENCE</p>
+    <h2>Three blocks, not a marker list</h2>
+    <p class="sub">Murphy units 7–8, then 13–14: what the perfect does, what the simple does, then only the collision. Original examples, course-level register.</p>
+    <div class="tabs">
+      <button class="on" data-tab="pp">Present perfect</button>
+      <button data-tab="ps">Past simple</button>
+      <button data-tab="hit">The collision</button>
+    </div>
+    <div class="rule on" id="tab-pp">
+      <ol>
+        <li><b>A present situation.</b> <span class="ex">The courier has lost the samples.</span> We do not have them. The time is not the point.</li>
+        <li><b>just, already, yet.</b> <span class="ex">I've just come off a call. We've already filed the bid. Have you finalized the slot yet?</span></li>
+        <li><b>Experience up to now.</b> <span class="ex">Have you ever pitched for a public contract? It's the first time we've dealt with this supplier.</span></li>
+        <li><b>An open period.</b> so far, this month, today while it is still today. <span class="ex">We've had four client calls so far this week.</span></li>
+      </ol>
+    </div>
+    <div class="rule" id="tab-ps">
+      <ol>
+        <li><b>A finished time.</b> <span class="ex">We signed the framework agreement in March. The results were announced last week.</span></li>
+        <li><b>A story.</b> <span class="ex">She called head office at 5.30, explained the delay and sent the revised brief.</span></li>
+        <li><b>When / What time / How long ago.</b> These expect a finished answer. <span class="ex">When did you speak to them? — On Tuesday.</span></li>
+        <li><b>A posting that ended.</b> <span class="ex">I worked on the Seoul account for three years, then moved to audit in 2022.</span></li>
+      </ol>
+    </div>
+    <div class="rule" id="tab-hit">
+      <ol>
+        <li><b>News, then detail.</b> <span class="ex">Have you heard about the bid? We heard this morning. They announced it at 9.</span></li>
+        <li><b>The clock moves.</b> Wednesday: <span class="ex">Have you spoken to the caterers this week?</span> Friday, 5 p.m.: <span class="ex">Did you speak to the caterers this week?</span></li>
+        <li><b>for / since against ago.</b> <span class="ex">She has managed the account for six years.</span> Not with two weeks ago.</li>
+        <li><b>gone / been / went.</b> still there, back, or a dated trip.</li>
+        <li><b>British default</b> with just / already / yet is the perfect. American English often uses the past simple. Viewpoint can close this week before midnight.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel" id="lab">
+    <p class="kicker">PRACTICE</p>
+    <h2>Use the context, not the highlighter</h2>
+    <p class="sub">The time marker is sometimes a trap. Read who is speaking, and whether the period is still open.</p>
+    <div class="lab-nav">
+      <button class="on" data-lab="choose">Choose the tense</button>
+      <button data-lab="repair">Correct the mistake</button>
+      <button data-lab="signals">Signal words</button>
+      <button data-lab="pairs">Sentence pairs</button>
+    </div>
+    <div id="lab-choose" class="lab"></div>
+    <div id="lab-repair" class="lab" hidden></div>
+    <div id="lab-signals" class="lab" hidden></div>
+    <div id="lab-pairs" class="lab" hidden></div>
+  </section>
+
+  <section class="panel" id="quiz">
+    <p class="kicker">SCORED CHECK</p>
+    <h2>Twelve items. A pass is 10.</h2>
+    <p class="sub">Misses come back with the rule. Read it before Next.</p>
+    <div class="scorebar"><span id="quiz-progress">Question 1 of 12</span><span id="quiz-live">Score 0</span></div>
+    <div id="quiz-body"></div>
+    <div class="result" id="quiz-result"></div>
+  </section>
+  <footer class="note">Grammar Lab · adult intermediate+ · rules follow Murphy units 7–8 and 13–14 and a standard course reference. Examples are original.</footer>
+</main>
+<script>
+const chooseItems = [
+  { q: "Head office _____ the budget, so we can brief the team. Time is not mentioned.", opts: ["has approved", "approved"], a: 0, why: "Present result, time unnamed. That is the perfect's first job." },
+  { q: "We _____ the framework agreement in March.", opts: ["have signed", "signed"], a: 1, why: "in March is a finished time. The perfect cannot take it." },
+  { q: "It's the first time we _____ with this supplier.", opts: ["have dealt", "dealt"], a: 0, why: "It's the first time is followed by the present perfect." },
+  { q: "She _____ head office at 5.30, explained the delay and sent the revised brief.", opts: ["has called", "called"], a: 1, why: "A clock time plus a sequence is a past-simple story." },
+  { q: "_____ you _____ the warehouse slot yet? I still don't have the brief.", opts: ["Have / finalized", "Did / finalize"], a: 0, why: "yet, and the task is still open." },
+  { q: "I _____ on the Seoul account for three years, then moved to audit in 2022.", opts: ["have worked", "worked"], a: 1, why: "The posting ended in 2022. for here is a closed period." },
+  { q: "She _____ the account for six years. She is still the lead.", opts: ["has managed", "managed"], a: 0, why: "for reaches now. The state continues." },
+  { q: "Wednesday: _____ you spoken to the caterers this week?", opts: ["Have", "Did"], a: 0, why: "The week is still open." },
+  { q: "Friday, 5 p.m., leaving the office: _____ you speak to the caterers this week?", opts: ["Have", "Did"], a: 1, why: "The speaker is closing the week. Same phrase, past simple." },
+  { q: "How long ago _____ you take over the account?", opts: ["have", "did"], a: 1, why: "How long ago expects a finished distance. Not the perfect." }
+];
+
+const repairItems = [
+  { bad: "We have submitted the bid two weeks ago.", opts: ["We submitted the bid two weeks ago.", "We have submitted the bid two weeks ago.", "We have submit the bid two weeks ago."], a: 0, why: "ago closes the time. The perfect cannot stand with it." },
+  { bad: "When have you spoken to the caterers?", opts: ["When did you speak to the caterers?", "When have you spoke to the caterers?", "When you have spoken to the caterers?"], a: 0, why: "When asks for a finished point." },
+  { bad: "I manage this account since March.", opts: ["I have managed this account since March.", "I managed this account since March.", "I have manage this account since March."], a: 0, why: "since plus a state up to now needs the perfect." },
+  { bad: "She has went to the warehouse on the 19th.", opts: ["She went to the warehouse on the 19th.", "She has gone to the warehouse on the 19th.", "She has been to the warehouse on the 19th."], a: 0, why: "A finished date forces the past simple. has went is also the wrong participle." },
+  { bad: "It's the first time we deal with this supplier.", opts: ["It's the first time we've dealt with this supplier.", "It's the first time we dealt with this supplier.", "It's the first time we have deal with this supplier."], a: 0, why: "It's the first time + present perfect." },
+  { bad: "She didn't went to the plant last night.", opts: ["She didn't go to the plant last night.", "She didn't gone to the plant last night.", "She hasn't went to the plant last night."], a: 0, why: "did already marks the past. The verb stays in the base form." }
+];
+
+const signalWords = [
+  { w: "in March", bin: "ps" },
+  { w: "at 5.30", bin: "ps" },
+  { w: "two weeks ago", bin: "ps" },
+  { w: "last week", bin: "ps" },
+  { w: "how long ago", bin: "ps" },
+  { w: "on the 19th", bin: "ps" },
+  { w: "yet", bin: "pp" },
+  { w: "already", bin: "pp" },
+  { w: "since March", bin: "pp" },
+  { w: "so far", bin: "pp" },
+  { w: "ever", bin: "pp" },
+  { w: "it's the first time", bin: "pp" },
+  { w: "this week", bin: "both" },
+  { w: "this morning", bin: "both" },
+  { w: "just", bin: "both" },
+  { w: "for six years", bin: "both" }
+];
+
+const pairItems = [
+  { ctx: "The samples are missing. Nobody is dating the loss.", opts: ["The courier has lost the samples.", "The courier lost the samples on the train."], a: 0, why: "Present result, time unnamed." },
+  { ctx: "The only new information is where and when.", opts: ["The courier has lost the samples.", "The courier lost the samples on the train."], a: 1, why: "A finished occasion takes the past simple." },
+  { ctx: "She is not in the office. The trip is current.", opts: ["She has gone to the warehouse.", "She went to the warehouse on the 19th."], a: 0, why: "gone = she is still there." },
+  { ctx: "You want to know if this has happened at any point in her career.", opts: ["Has she ever pitched for a public contract?", "Did she pitch for the contract in 2022?"], a: 0, why: "ever is life experience, not a year." },
+  { ctx: "It is Wednesday. You still expect the call to happen.", opts: ["Have you spoken to the caterers this week?", "Did you speak to the caterers this week?"], a: 0, why: "Open week → present perfect." },
+  { ctx: "Friday, 5 p.m. You are about to leave the office.", opts: ["Have you spoken to the caterers this week?", "Did you speak to the caterers this week?"], a: 1, why: "The speaker is closing the week." }
+];
+
+const quiz = [
+  { q: "The client has the revised draft. You are not saying when you sent it.", opts: ["I have sent the revised draft.", "I sent the revised draft at 5.30."], a: 0, why: "Result now, time unnamed." },
+  { q: "Which question is possible?", opts: ["When have they announced the bid?", "When did they announce the bid?"], a: 1, why: "When refuses the perfect." },
+  { q: "She still leads the account, and she started in March.", opts: ["She has managed it since March.", "She managed it since March."], a: 0, why: "since + a continuing state." },
+  { q: "The posting ended in 2022.", opts: ["She has managed the account for six years.", "She managed the account for six years, then moved."], a: 1, why: "A closed for-period is past simple." },
+  { q: "Asked at noon, about today.", opts: ["Has the courier been yet today?", "Did the courier come yet today?"], a: 0, why: "The day is open, and yet prefers the perfect." },
+  { q: "Said at 6 p.m. about the morning.", opts: ["Has the client replied this morning?", "Did the client reply this morning?"], a: 1, why: "This morning is over by evening. Murphy's closed-period reading." },
+  { q: "News, then the time.", opts: ["Have you heard? We heard this morning.", "Have you heard this morning at 9?"], a: 0, why: "Perfect opens the topic. The clock time goes to the simple." },
+  { q: "She is still at the plant.", opts: ["She has gone to the plant.", "She has been to the plant."], a: 0, why: "gone = not here. been = went and returned." },
+  { q: "British course default, a minute ago, still news.", opts: ["I've just cancelled the order.", "I have cancelled the order two minutes ago."], a: 0, why: "just + perfect. ago cannot join the perfect." },
+  { q: "It's the first time...", opts: ["we've dealt with this supplier", "we deal with this supplier"], a: 0, why: "It's the first time + present perfect." },
+  { q: "How long ago...", opts: ["did you take over the account?", "have you taken over the account?"], a: 0, why: "How long ago forces the past simple." },
+  { q: "Friday, 4.30. The speaker is closing the week.", opts: ["We've made a lot of progress this week.", "We made a lot of progress this week."], a: 1, why: "Viewpoint, not the calendar. The period is being treated as finished." }
+];
+
+function renderChoice(list, hostId) {
+  const host = document.getElementById(hostId);
+  host.innerHTML = list.map((item, i) => `
+    <div class="item" data-i="${i}">
+      <p>${item.q || item.bad}</p>
+      <div class="opts">${item.opts.map((o, j) => `<button data-j="${j}">${o}</button>`).join("")}</div>
+      <div class="why">${item.why}</div>
+    </div>`).join("");
+  host.querySelectorAll(".item").forEach((card) => {
+    const i = +card.dataset.i;
+    card.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (card.dataset.done) return;
+        card.dataset.done = "1";
+        card.querySelectorAll("button").forEach((b) => {
+          b.disabled = true;
+          if (+b.dataset.j === list[i].a) b.classList.add("good");
+          else if (b === btn) b.classList.add("bad");
+        });
+        card.querySelector(".why").classList.add("show");
+      });
+    });
+  });
+}
+
+function renderPairs() {
+  const host = document.getElementById("lab-pairs");
+  host.innerHTML = pairItems.map((item, i) => `
+    <div class="item" data-i="${i}">
+      <p><b>Context.</b> ${item.ctx}</p>
+      <div class="opts">${item.opts.map((o, j) => `<button data-j="${j}">${o}</button>`).join("")}</div>
+      <div class="why">${item.why}</div>
+    </div>`).join("");
+  host.querySelectorAll(".item").forEach((card) => {
+    const i = +card.dataset.i;
+    card.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (card.dataset.done) return;
+        card.dataset.done = "1";
+        card.querySelectorAll("button").forEach((b) => {
+          b.disabled = true;
+          if (+b.dataset.j === pairItems[i].a) b.classList.add("good");
+          else if (b === btn) b.classList.add("bad");
+        });
+        card.querySelector(".why").classList.add("show");
+      });
+    });
+  });
+}
+
+function renderSignals() {
+  const host = document.getElementById("lab-signals");
+  host.innerHTML = `
+    <p class="sub">Click a word, then click its column. this week, this morning, just and for six years belong in Depends.</p>
+    <div class="sort-board">
+      <div class="bin" id="pool"><h3>Words</h3><div id="pool-chips"></div></div>
+      <div class="bin" data-bin="ps"><h3>Past Simple</h3><div class="drop"></div></div>
+      <div class="bin" data-bin="pp"><h3>Present Perfect</h3><div class="drop"></div></div>
+      <div class="bin" data-bin="both"><h3>Depends</h3><div class="drop"></div></div>
+    </div>
+    <div style="margin-top:12px; display:flex; gap:8px;">
+      <button class="primary" id="check-signals">Check sort</button>
+      <button class="ghost" id="reset-signals">Reset</button>
+    </div>
+    <div class="why" id="signal-why"></div>`;
+  const pool = host.querySelector("#pool-chips");
+  let selected = null;
+  signalWords.forEach((word) => {
+    const el = document.createElement("button");
+    el.className = "chip";
+    el.textContent = word.w;
+    el.dataset.need = word.bin;
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      host.querySelectorAll(".chip").forEach((c) => c.classList.remove("sel"));
+      el.classList.add("sel");
+      selected = el;
+    });
+    pool.appendChild(el);
+  });
+  host.querySelectorAll(".bin[data-bin]").forEach((bin) => {
+    bin.addEventListener("click", () => {
+      if (!selected) return;
+      bin.querySelector(".drop").appendChild(selected);
+      selected.classList.remove("sel");
+      selected = null;
+    });
+  });
+  host.querySelector("#check-signals").addEventListener("click", () => {
+    let ok = 0;
+    host.querySelectorAll(".chip").forEach((chip) => {
+      const got = chip.closest(".bin") && chip.closest(".bin").dataset.bin;
+      chip.classList.remove("ok", "no");
+      if (got === chip.dataset.need) { chip.classList.add("ok"); ok++; }
+      else chip.classList.add("no");
+    });
+    const why = host.querySelector("#signal-why");
+    why.classList.add("show");
+    why.textContent = ok + " / " + signalWords.length + " placed. Red chips are in the wrong column.";
+  });
+  host.querySelector("#reset-signals").addEventListener("click", () => renderSignals());
+}
+
+document.querySelectorAll(".tabs button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tabs button").forEach((b) => b.classList.remove("on"));
+    document.querySelectorAll(".rule").forEach((r) => r.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("on");
+  });
+});
+document.querySelectorAll(".lab-nav button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lab-nav button").forEach((b) => b.classList.remove("on"));
+    btn.classList.add("on");
+    document.querySelectorAll(".lab").forEach((p) => { p.hidden = true; });
+    document.getElementById("lab-" + btn.dataset.lab).hidden = false;
+  });
+});
+
+renderChoice(chooseItems, "lab-choose");
+renderChoice(repairItems, "lab-repair");
+renderSignals();
+renderPairs();
+
+let qi = 0, qscore = 0, misses = [];
+const quizBody = document.getElementById("quiz-body");
+function showQuiz() {
+  const item = quiz[qi];
+  document.getElementById("quiz-progress").textContent = "Question " + (qi + 1) + " of " + quiz.length;
+  document.getElementById("quiz-live").textContent = "Score " + qscore;
+  quizBody.innerHTML = `<div class="item"><p>${item.q}</p><div class="opts">${item.opts.map((o, j) => `<button data-j="${j}">${o}</button>`).join("")}</div><div class="why">${item.why}</div></div>`;
+  quizBody.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const j = +btn.dataset.j;
+      if (j === item.a) qscore++;
+      else misses.push({ q: item.q, correct: item.opts[item.a], why: item.why });
+      quizBody.querySelectorAll("button").forEach((b) => {
+        b.disabled = true;
+        if (+b.dataset.j === item.a) b.classList.add("good");
+        else if (b === btn) b.classList.add("bad");
+      });
+      quizBody.querySelector(".why").classList.add("show");
+      document.getElementById("quiz-live").textContent = "Score " + qscore;
+      const next = document.createElement("button");
+      next.className = "primary";
+      next.style.marginTop = "12px";
+      next.textContent = qi === quiz.length - 1 ? "See the score" : "Next";
+      next.addEventListener("click", () => {
+        qi++;
+        if (qi < quiz.length) showQuiz();
+        else finishQuiz();
+      });
+      quizBody.querySelector(".item").appendChild(next);
+    });
+  });
+}
+function finishQuiz() {
+  quizBody.innerHTML = "";
+  document.getElementById("quiz-progress").textContent = "Complete";
+  const box = document.getElementById("quiz-result");
+  box.classList.add("show");
+  box.innerHTML = `<strong>${qscore} / ${quiz.length}</strong><p>${qscore >= 10 ? "Clean pass." : "Below 10. Redo the misses, then run it again."}</p>${misses.length ? "<ul>" + misses.map((m) => `<li>${m.q}<br><span class="ex">${m.correct}</span> — ${m.why}</li>`).join("") + "</ul>" : "<p>No misses.</p>"}<button class="primary" id="retry">Try the check again</button>`;
+  document.getElementById("retry").addEventListener("click", () => {
+    qi = 0; qscore = 0; misses = [];
+    box.classList.remove("show");
+    box.innerHTML = "";
+    showQuiz();
+  });
+}
+showQuiz();
+</script>
+</body>
+</html>
