@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Grammar Lab · Present Perfect vs Past Simple</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 <style>
   :root {
     --teal: #2fbfb3; --teal-d: #0e8f82; --violet: #6e62dc; --purple: #5b4ed0;
@@ -19,7 +20,8 @@
   .bg-blobs .b { width: 180px; height: 180px; background: #8e84f0; top: 40px; right: -50px; }
   .bg-blobs .c { width: 140px; height: 140px; background: #f0a0c0; bottom: 80px; left: -30px; }
   header { position: relative; z-index: 1; max-width: 1080px; margin: 28px auto 0; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  .brand { font-size: 13px; letter-spacing: 0.16em; font-weight: 700; color: var(--teal-d); }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 13px; letter-spacing: 0.16em; font-weight: 700; color: var(--teal-d); }
+  .brand svg { display: block; }
   nav { display: flex; gap: 8px; flex-wrap: wrap; }
   nav a { text-decoration: none; color: var(--ink); background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 14px rgba(28,36,48,0.06); }
   main { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 18px 20px 64px; }
@@ -81,7 +83,17 @@
 <body>
 <div class="bg-blobs"><span class="a"></span><span class="b"></span><span class="c"></span></div>
 <header>
-  <div class="brand">GRAMMAR LAB</div>
+  <div class="brand">
+    <svg width="36" height="36" viewBox="0 0 48 48" aria-hidden="true">
+      <rect width="48" height="48" rx="12" fill="#ffffff"/>
+      <path d="M20 8h8v6l8 16a8 8 0 0 1-7 12h-10a8 8 0 0 1-7-12l8-16V8z" fill="#E7F7F5" stroke="#0E8F82" stroke-width="2"/>
+      <path d="M16 28h16c1 4-1 8-6 8h-4c-5 0-7-4-6-8z" fill="#6E62DC"/>
+      <circle cx="22" cy="32" r="1.4" fill="#F2C14E"/>
+      <circle cx="27" cy="34" r="1" fill="#F0A0C0"/>
+      <path d="M18 14h12" stroke="#0E8F82" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    GRAMMAR LAB
+  </div>
   <nav>
     <a href="#reference">Reference</a>
     <a href="#lab">Practice</a>
